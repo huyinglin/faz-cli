@@ -62,7 +62,7 @@ Object.keys(actionMap).forEach((action) => {
           create(...process.argv.slice(3));
           break;
         case "init":
-          init(program.username, program.token);
+          init();
           break;
         // case "dev":
         //   dev(program.port);

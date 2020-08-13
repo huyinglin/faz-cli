@@ -22,8 +22,8 @@ function updateJsonFile(fileName, obj) {
 async function loadCmd(cmd, startText, endText, path) {
   let loading = ora();
   loading.start(startText);
-  await exec(cmd, { cwd: path });
-  loading.succeed(endText);
+  await exec(cmd, path ? { cwd: path } : undefined);
+  loading.succeed(endText || startText);
 }
 
 module.exports = {
