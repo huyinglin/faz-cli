@@ -1,4 +1,7 @@
 const fs = require('fs');
+const ora = require('ora');
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
 
 function updateJsonFile(fileName, obj) {
   return new Promise(resolve => {
@@ -16,6 +19,14 @@ function updateJsonFile(fileName, obj) {
   });
 }
 
+async function loadCmd(cmd, startText, endText, path) {
+  let loading = ora();
+  loading.start(startText);
+  await exec(cmd, { cwd: path });
+  loading.succeed(endText);
+}
+
 module.exports = {
-  updateJsonFile
+  updateJsonFile,
+  loadCmd,
 }

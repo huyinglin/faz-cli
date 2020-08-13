@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
 const ncp = require('ncp').ncp;
-const { updateJsonFile } = require('./util');
+const { updateJsonFile, loadCmd } = require('./util');
 
 function create(projectName) {
   if (projectName === undefined) {
@@ -70,12 +70,26 @@ function create(projectName) {
         };
 
         updateJsonFile(fileName, updateConfig)
-          .then(() => {
-            console.log(' \n');
-            console.log(symbol.success, `Success! Created ${projectName} at `, chalk.green(`${destinationPath}.`));
-            console.log(symbol.info, 'Inside that directory, you can run several commands:\n');
+          .then(async () => {
+            console.log('\nCreating a new React app in ', chalk.green(`${destinationPath}.\n`));
+            console.log(`Installing packages. This might take a couple of minutes.\n`);
+
+            await loadCmd(`yarn`, 'Installing packages...', 'Done.', destinationPath);
+
+            console.log('\nInside that directory, you can run several commands:\n');
+
+            console.log(`  ${chalk.cyan('faz-cli init')}`);
+            console.log(`     Initializes the git repository and automatically generates git repositories remotely.\n`);
+
+            console.log(`  ${chalk.cyan('faz-cli dev')}`);
+            console.log(`     Starts the development server.\n`);
+
+            console.log(`  ${chalk.cyan('faz-cli build')}`);
+            console.log(`     Bundles the app into static files for production.\n`);
+
+            console.log(`We suggest that you begin by typing:\n`);
             console.log(`  ${chalk.cyan('cd')} ${projectName}`);
-            console.log(`  ${chalk.cyan('faz-cli init')}\n`);
+            console.log(`  ${chalk.cyan('faz-cli dev')}\n`);
             console.log(`Happy hacking!`);
           })
       });

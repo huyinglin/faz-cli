@@ -2,17 +2,7 @@ const child = require('child_process');
 const symbol = require('log-symbols');
 const chalk = require('chalk');
 const ora = require('ora');
-const util = require("util");
-
-const { updateJsonFile } = require('./util');
-const exec = util.promisify(require("child_process").exec);
-
-let loadCmd = async (cmd, text) => {
-  let loading = ora();
-  loading.start(`${text}: 命令执行中...`);
-  await exec(cmd);
-  loading.succeed(`${text}: 命令执行完成`);
-}
+const { updateJsonFile, loadCmd } = require('./util');
 
 async function init(username, token) {
   await loadCmd(`git init`, 'git初始化');
