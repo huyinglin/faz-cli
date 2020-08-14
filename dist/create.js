@@ -16,9 +16,10 @@ var inquirer = require('inquirer');
 
 var ncp = require('ncp').ncp;
 
-var _require = require('./util'),
-    updateJsonFile = _require.updateJsonFile,
-    loadCmd = _require.loadCmd;
+var {
+  updateJsonFile,
+  loadCmd
+} = require('./util');
 
 function create(projectName) {
   if (projectName === undefined) {
@@ -36,7 +37,7 @@ function create(projectName) {
     name: 'frame',
     message: 'Template:',
     choices: ['React', 'React-Typescript'],
-    "default": 'react'
+    default: 'react'
   }, {
     type: 'input',
     name: 'description',
@@ -49,13 +50,15 @@ function create(projectName) {
     type: 'input',
     name: 'version',
     message: 'Version:',
-    "default": '1.0.0'
+    default: '1.0.0'
   }];
-  inquirer.prompt(promptList).then(function (answer) {
-    var frame = answer.frame,
-        description = answer.description,
-        author = answer.author,
-        version = answer.version;
+  inquirer.prompt(promptList).then(answer => {
+    var {
+      frame,
+      description,
+      author,
+      version
+    } = answer;
     var templatePath = path.resolve(__dirname, "../template/".concat(frame));
     var destinationPath = path.resolve(process.cwd(), projectName);
     ncp(templatePath, destinationPath, function (err) {
@@ -65,41 +68,27 @@ function create(projectName) {
 
       var fileName = path.resolve(destinationPath, 'package.json');
       var updateConfig = {
-        description: description,
-        author: author,
-        version: version,
+        description,
+        author,
+        version,
         name: projectName
       };
-      updateJsonFile(fileName, updateConfig).then( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                console.log('\nCreating a new React app in ', chalk.green("".concat(destinationPath, ".\n")));
-                console.log("Installing packages. This might take a couple of minutes.\n");
-                _context.next = 4;
-                return loadCmd("yarn", 'Installing packages...', 'Done.', destinationPath);
-
-              case 4:
-                console.log('\nInside that directory, you can run several commands:\n');
-                console.log("  ".concat(chalk.cyan('faz-cli init')));
-                console.log("     Initializes the git repository and automatically generates git repositories remotely.\n");
-                console.log("  ".concat(chalk.cyan('faz-cli dev')));
-                console.log("     Starts the development server.\n");
-                console.log("  ".concat(chalk.cyan('faz-cli build')));
-                console.log("     Bundles the app into static files for production.\n");
-                console.log("We suggest that you begin by typing:\n");
-                console.log("  ".concat(chalk.cyan('cd'), " ").concat(projectName));
-                console.log("  ".concat(chalk.cyan('faz-cli dev'), "\n"));
-                console.log("Happy hacking!");
-
-              case 15:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      })));
+      updateJsonFile(fileName, updateConfig).then( /*#__PURE__*/_asyncToGenerator(function* () {
+        console.log('\nCreating a new React app in ', chalk.green("".concat(destinationPath, ".\n")));
+        console.log("Installing packages. This might take a couple of minutes.\n");
+        yield loadCmd("yarn", 'Installing packages...', 'Done.', destinationPath);
+        console.log('\nInside that directory, you can run several commands:\n');
+        console.log("  ".concat(chalk.cyan('faz-cli init')));
+        console.log("     Initializes the git repository and automatically generates git repositories remotely.\n");
+        console.log("  ".concat(chalk.cyan('faz-cli dev')));
+        console.log("     Starts the development server.\n");
+        console.log("  ".concat(chalk.cyan('faz-cli build')));
+        console.log("     Bundles the app into static files for production.\n");
+        console.log("We suggest that you begin by typing:\n");
+        console.log("  ".concat(chalk.cyan('cd'), " ").concat(projectName));
+        console.log("  ".concat(chalk.cyan('faz-cli dev'), "\n"));
+        console.log("Happy hacking!");
+      }));
     });
   });
 }

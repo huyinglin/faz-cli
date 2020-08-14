@@ -9,7 +9,7 @@
     "build": "babel src -d dist"
   },
   "publishConfig": {
-    "registry": "https://github.com/huyinglin/faz-cli",
+    "registry": "https://registry.npmjs.org/",
     "tag": "cli",
     "access": "public"
   },

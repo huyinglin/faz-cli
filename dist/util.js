@@ -13,11 +13,11 @@ var util = require("util");
 var exec = util.promisify(require("child_process").exec);
 
 function updateJsonFile(fileName, obj) {
-  return new Promise(function (resolve) {
+  return new Promise(resolve => {
     if (fs.existsSync(fileName)) {
       var data = fs.readFileSync(fileName).toString();
       var json = JSON.parse(data);
-      Object.keys(obj).forEach(function (key) {
+      Object.keys(obj).forEach(key => {
         if (obj[key]) {
           json[key] = obj[key];
         }
@@ -33,33 +33,18 @@ function loadCmd(_x, _x2, _x3, _x4) {
 }
 
 function _loadCmd() {
-  _loadCmd = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(cmd, startText, endText, path) {
-    var loading;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            loading = ora();
-            loading.start(startText);
-            _context.next = 4;
-            return exec(cmd, path ? {
-              cwd: path
-            } : undefined);
-
-          case 4:
-            loading.succeed(endText || startText);
-
-          case 5:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
+  _loadCmd = _asyncToGenerator(function* (cmd, startText, endText, path) {
+    var loading = ora();
+    loading.start(startText);
+    yield exec(cmd, path ? {
+      cwd: path
+    } : undefined);
+    loading.succeed(endText || startText);
+  });
   return _loadCmd.apply(this, arguments);
 }
 
 module.exports = {
-  updateJsonFile: updateJsonFile,
-  loadCmd: loadCmd
+  updateJsonFile,
+  loadCmd
 };
