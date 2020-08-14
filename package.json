@@ -5,14 +5,23 @@
   "main": "index.js",
   "author": "huyinglin",
   "license": "MIT",
+  "scripts": {
+    "build": "babel src -d dist"
+  },
+  "publishConfig": {
+    "registry": "https://github.com/huyinglin/faz-cli",
+    "tag": "cli",
+    "access": "public"
+  },
+  "keywords": [
+    "CLI"
+  ],
   "bin": {
     "faz-cli": "./bin/cmd",
     "fac": "./bin/cmd",
     "fcli": "./bin/cmd"
   },
   "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "chalk": "^4.1.0",
     "commander": "^6.0.0",
     "inquirer": "^7.3.3",
@@ -21,6 +30,7 @@
     "ora": "^5.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0"
   }
 }
